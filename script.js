@@ -1,52 +1,57 @@
-let operand1 = null;
-let operand2 = null;
-let op = null;
+let operand1 = "";
+let operand2 = "";
+let op = "";
 let inputScreenText = "";
 let displayScreenText = "";
+
+const btnEquals = document.getElementById("btn-equals");
+const btnClear = document.getElementById("btn-clear");
 
 const digits = document.querySelectorAll(".digit");
 const operators = document.querySelectorAll(".operator");
 
-function updateInputScreen(value) {
-    document.getElementById("input-screen").value = value;
+function updateInputScreen() {
+    document.getElementById("input-screen").value = inputScreenText;
 }
 
-function updateDisplayScreen(value) {
-    document.getElementById("display-screen").value = value
+function updateDisplayScreen() {
+    document.getElementById("display-screen").value = displayScreenText;
 }
 
 function appendNum(numValue) {
     if (inputScreenText === "0" && numValue !== "0") {
         inputScreenText = numValue;
+        displayScreenText = numValue;
     }
 
     else if (!(inputScreenText === "0" && numValue === "0")) {
         inputScreenText += numValue;
+        displayScreenText += numValue;
     }
-    
-    displayScreenText += numValue;
-    updateInputScreen(inputScreenText);
+
+    updateInputScreen();
 }
 
 function appendOperator(operatorValue) {
-    if (inputScreenText === "" || op !== null) {
+    if (inputScreenText === "" || op !== "") {
         return;
     }
 
     op = operatorValue;
     operand1 = parseFloat(inputScreenText);
     displayScreenText += operatorValue;
-    updateDisplayScreen(displayScreenText);
     inputScreenText = "";
+    updateDisplayScreen();
+    updateInputScreen();
 }
 
 function calculate() {
-    if (inputScreenText === "" || op === null || operand1 === null) {
-        return
+    if (inputScreenText === "" || op === "" || operand1 === "") {
+        return;
     }
 
     operand2 = parseFloat(inputScreenText);
-    let result;
+    let result = "";
 
     switch (op) {
         case '+':
@@ -63,12 +68,22 @@ function calculate() {
             break;
     }
 
-    updateDisplayScreen(displayScreenText);
-
-    updateInputScreen(result);
+    inputScreenText = result;
+    updateDisplayScreen();
+    updateInputScreen();
     inputScreenText = "";
-    operand1 = null;
-    op = null;
+    operand1 = "";
+    op = "";
+}
+
+function clearAll() {
+    inputScreenText = "";
+    displayScreenText = "";
+    operand1 = "";
+    operand2 = "";
+    op = "";
+    updateDisplayScreen();
+    updateInputScreen();
 }
 
 digits.forEach((digit) => {
@@ -82,3 +97,6 @@ operators.forEach((operator) => {
         appendOperator(operator.value);
     });
 });
+
+btnEquals.addEventListener("click", calculate);
+btnClear.addEventListener("click", clearAll);
