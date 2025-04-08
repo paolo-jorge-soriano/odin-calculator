@@ -1,43 +1,51 @@
 let operand1 = null;
 let operand2 = null;
 let op = null;
-let screenText = "";
+let inputScreenText = "";
+let displayScreenText = "";
 
 const digits = document.querySelectorAll(".digit");
 const operators = document.querySelectorAll(".operator");
 
-function updateDisplay(value) {
-    document.getElementById("display").value = value;
+function updateInputScreen(value) {
+    document.getElementById("input-screen").value = value;
+}
+
+function updateDisplayScreen(value) {
+    document.getElementById("display-screen").value = value
 }
 
 function appendNum(numValue) {
-    if (screenText === "0" && numValue !== "0") {
-        screenText = numValue;
+    if (inputScreenText === "0" && numValue !== "0") {
+        inputScreenText = numValue;
     }
 
-    else if (!(screenText === "0" && numValue === "0")) {
-        screenText += numValue;
+    else if (!(inputScreenText === "0" && numValue === "0")) {
+        inputScreenText += numValue;
     }
-
-    updateDisplay(screenText);
+    
+    displayScreenText += numValue;
+    updateInputScreen(inputScreenText);
 }
 
 function appendOperator(operatorValue) {
-    if (screenText === "") {
+    if (inputScreenText === "" || op !== null) {
         return;
     }
 
     op = operatorValue;
-    operand1 = parseFloat(screenText);
-    screenText = "";
+    operand1 = parseFloat(inputScreenText);
+    displayScreenText += operatorValue;
+    updateDisplayScreen(displayScreenText);
+    inputScreenText = "";
 }
 
 function calculate() {
-    if (screenText === "" || op === null || operand1 === null) {
+    if (inputScreenText === "" || op === null || operand1 === null) {
         return
     }
 
-    operand2 = parseFloat(screenText);
+    operand2 = parseFloat(inputScreenText);
     let result;
 
     switch (op) {
@@ -55,8 +63,10 @@ function calculate() {
             break;
     }
 
-    updateDisplay(result);
-    screenText = "";
+    updateDisplayScreen(displayScreenText);
+
+    updateInputScreen(result);
+    inputScreenText = "";
     operand1 = null;
     op = null;
 }
