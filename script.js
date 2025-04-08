@@ -71,6 +71,7 @@ function calculate() {
     inputScreenText = result;
     updateDisplayScreen();
     updateInputScreen();
+    displayScreenText = "";
     inputScreenText = "";
     operand1 = "";
     op = "";
