@@ -109,6 +109,7 @@ btnOperations.forEach(btnOperation => {
 btnEquals.addEventListener("click", () => {
     calculate();
     setDisplay();
+    currentOperand = "";
 });
 
 btnAllClear.addEventListener("click", () => {
@@ -121,7 +122,7 @@ btnDelete.addEventListener("click", () => {
     setDisplay();
 });
 
-// Listen for keyboard input
+// Listen for keyboard events
 document.addEventListener("keydown", e => {
     if (numberKeys.includes(e.key)) {
         appendNumber(e.key);
@@ -136,6 +137,7 @@ document.addEventListener("keydown", e => {
     else if (e.key === '=' || e.key === 'Enter') {
         calculate();
         setDisplay();
+        currentOperand = "";
     }
 
     else if (e.key === 'Backspace') {
