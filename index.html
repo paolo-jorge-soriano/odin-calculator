@@ -10,31 +10,32 @@
 
     <body>
         <div>
-            <input type="text" id="display-screen" readonly>
-            <br>
-            <input type="text" id="input-screen" readonly>
+            <div data-previous-operand></div>
+            <div data-current-operand></div>
         </div>
 
         <div>
-            <button class="digit" value="0">0</button>
-            <button class="digit" value="1">1</button>
-            <button class="digit" value="2">2</button>
-            <button class="digit" value="3">3</button>
-            <button class="digit" value="4">4</button>
-            <button class="digit" value="5">5</button>
-            <button class="digit" value="6">6</button>
-            <button class="digit" value="7">7</button>
-            <button class="digit" value="8">8</button>
-            <button class="digit" value="9">9</button>
+            <button data-number>0</button>
+            <button data-number>1</button>
+            <button data-number>2</button>
+            <button data-number>3</button>
+            <button data-number>4</button>
+            <button data-number>5</button>
+            <button data-number>6</button>
+            <button data-number>7</button>
+            <button data-number>8</button>
+            <button data-number>9</button>
+            <button data-number>.</button>
         </div>
 
         <div>
-            <button class="operator" value="+">+</button>
-            <button class="operator" value="-">-</button>
-            <button class="operator" value="*">*</button>
-            <button class="operator" value="/">/</button>
-            <button id="btn-equals" value="=">=</button>
-            <button id="btn-clear">CLEAR</button>
+            <button data-operation>+</button>
+            <button data-operation>-</button>
+            <button data-operation>*</button>
+            <button data-operation>/</button>
+            <button data-equals>=</button>
+            <button data-all-clear>AC</button>
+            <button data-delete>DEL</button>
         </div>
 
         <script src="script.js"></script>

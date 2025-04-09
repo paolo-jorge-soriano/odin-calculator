@@ -1,59 +1,62 @@
-let operand1 = "";
-let operand2 = "";
-let op = "";
-let inputScreenText = "";
-let displayScreenText = "";
+// VARIABLES
+let currentOperand = "";
+let previousOperand = "";
+let operation = undefined;
 
-const btnEquals = document.getElementById("btn-equals");
-const btnClear = document.getElementById("btn-clear");
+const previousOperandText = document.querySelector("[data-previous-operand]");
+const currentOperandText = document.querySelector("[data-current-operand]");
 
-const digits = document.querySelectorAll(".digit");
-const operators = document.querySelectorAll(".operator");
+const btnNumbers = document.querySelectorAll("[data-number]");
+const btnOperations = document.querySelectorAll("[data-operation]");
+const btnEquals = document.querySelector("[data-equals]");
+const btnAllClear = document.querySelector("[data-all-clear]");
+const btnDelete = document.querySelector("[data-delete]");
 
-function updateInputScreen() {
-    document.getElementById("input-screen").value = inputScreenText;
-}
+// FUNCTIONS
+function setDisplay() {
+    currentOperandText.innerText = currentOperand;
 
-function updateDisplayScreen() {
-    document.getElementById("display-screen").value = displayScreenText;
-}
-
-function appendNum(numValue) {
-    if (inputScreenText === "0" && numValue !== "0") {
-        inputScreenText = numValue;
-        displayScreenText = numValue;
+    if (operation != null) {
+        previousOperandText.innerText = `${previousOperand} ${operation}`;
     }
 
-    else if (!(inputScreenText === "0" && numValue === "0")) {
-        inputScreenText += numValue;
-        displayScreenText += numValue;
+    else {
+        previousOperandText.innerText = "";
     }
-
-    updateInputScreen();
 }
 
-function appendOperator(operatorValue) {
-    if (inputScreenText === "" || op !== "") {
+function appendNumber(number) {
+    if (number === '.' && currentOperand.includes('.')) {
         return;
     }
 
-    op = operatorValue;
-    operand1 = parseFloat(inputScreenText);
-    displayScreenText += operatorValue;
-    inputScreenText = "";
-    updateDisplayScreen();
-    updateInputScreen();
+    currentOperand = currentOperand.toString() + number.toString();
+}
+
+function setOperation(op) {
+    if (currentOperand === "") {
+        return;
+    }
+
+    if (previousOperand !== "") {
+        calculate();
+    }
+
+    operation = op;
+    previousOperand = currentOperand;
+    currentOperand = "";
 }
 
 function calculate() {
-    if (inputScreenText === "" || op === "" || operand1 === "") {
+    const operand1 = parseFloat(previousOperand);
+    const operand2 = parseFloat(currentOperand);
+    let result = undefined;
+
+    if (isNaN(operand1) || isNaN(operand2)) {
         return;
     }
 
-    operand2 = parseFloat(inputScreenText);
-    let result = "";
-
-    switch (op) {
+    switch (operation) {
         case '+':
             result = operand1 + operand2;
             break;
@@ -64,40 +67,53 @@ function calculate() {
             result = operand1 * operand2;
             break;
         case '/':
-            result = operand2 !== 0 ? operand1 / operand2 : "Cannot divide by zero";
+            result = operand1 / operand2;
             break;
+        default:
+            return;
     }
 
-    inputScreenText = result;
-    updateDisplayScreen();
-    updateInputScreen();
-    displayScreenText = "";
-    inputScreenText = "";
-    operand1 = "";
-    op = "";
+    currentOperand = result;
+    operation = undefined;
+    previousOperand = "";
 }
 
-function clearAll() {
-    inputScreenText = "";
-    displayScreenText = "";
-    operand1 = "";
-    operand2 = "";
-    op = "";
-    updateDisplayScreen();
-    updateInputScreen();
+function allClear() {
+    currentOperand = "";
+    previousOperand = "";
+    operation = undefined;
 }
 
-digits.forEach((digit) => {
-    digit.addEventListener("click", () => {
-        appendNum(digit.value);
+function deleteNumber() {
+    currentOperand = currentOperand.toString().slice(0, -1);
+}
+
+// DOM
+btnNumbers.forEach(btnNumber => {
+    btnNumber.addEventListener("click", () => {
+        appendNumber(btnNumber.innerText);
+        setDisplay();
     });
 });
 
-operators.forEach((operator) => {
-    operator.addEventListener("click", () => {
-        appendOperator(operator.value);
+btnOperations.forEach(btnOperation => {
+    btnOperation.addEventListener("click", () => {
+        setOperation(btnOperation.innerText);
+        setDisplay();
     });
 });
 
-btnEquals.addEventListener("click", calculate);
-btnClear.addEventListener("click", clearAll);
+btnEquals.addEventListener("click", () => {
+    calculate();
+    setDisplay();
+});
+
+btnAllClear.addEventListener("click", () => {
+    allClear();
+    setDisplay();
+});
+
+btnDelete.addEventListener("click", () => {
+    deleteNumber();
+    setDisplay();
+});
