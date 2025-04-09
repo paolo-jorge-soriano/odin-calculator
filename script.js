@@ -12,6 +12,9 @@ const btnEquals = document.querySelector("[data-equals]");
 const btnAllClear = document.querySelector("[data-all-clear]");
 const btnDelete = document.querySelector("[data-delete]");
 
+const numberKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
+const operatorKeys = ['+', '-', '*', '/'];
+
 // FUNCTIONS
 function setDisplay() {
     currentOperandText.innerText = currentOperand;
@@ -30,7 +33,7 @@ function appendNumber(number) {
         return;
     }
 
-    currentOperand = currentOperand.toString() + number.toString();
+    currentOperand += number;
 }
 
 function setOperation(op) {
@@ -85,7 +88,7 @@ function allClear() {
 }
 
 function deleteNumber() {
-    currentOperand = currentOperand.toString().slice(0, -1);
+    currentOperand = currentOperand.slice(0, -1);
 }
 
 // DOM
@@ -116,4 +119,27 @@ btnAllClear.addEventListener("click", () => {
 btnDelete.addEventListener("click", () => {
     deleteNumber();
     setDisplay();
+});
+
+// Listen for keyboard input
+document.addEventListener("keydown", e => {
+    if (numberKeys.includes(e.key)) {
+        appendNumber(e.key);
+        setDisplay();
+    }
+
+    else if (operatorKeys.includes(e.key)) {
+        setOperation(e.key);
+        setDisplay();
+    }
+
+    else if (e.key === '=' || e.key === 'Enter') {
+        calculate();
+        setDisplay();
+    }
+
+    else if (e.key === 'Backspace') {
+        deleteNumber();
+        setDisplay();
+    }
 });
