@@ -1,6 +1,6 @@
 // VARIABLES
-let currentOperand = "";
 let previousOperand = "";
+let currentOperand = "";
 let operation = undefined;
 
 const previousOperandText = document.querySelector("[data-previous-operand]");
@@ -12,8 +12,27 @@ const btnEquals = document.querySelector("[data-equals]");
 const btnAllClear = document.querySelector("[data-all-clear]");
 const btnDelete = document.querySelector("[data-delete]");
 
-const numberKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
-const operatorKeys = ['+', '-', '*', '/'];
+// Map keyboard keys to HTML button id's
+const keyboardKeys = {
+    '0': '0',
+    '1': '1',
+    '2': '2',
+    '3': '3',
+    '4': '4',
+    '5': '5',
+    '6': '6',
+    '7': '7',
+    '8': '8',
+    '9': '9',
+    '+': "add",
+    '-': "subtract",
+    '*': "multiply",
+    '/': "divide",
+    '.': "decimal",
+    '=': "equals",
+    "Enter": "equals",
+    "Backspace": "delete"
+};
 
 // FUNCTIONS
 function setDisplay() {
@@ -124,24 +143,7 @@ btnDelete.addEventListener("click", () => {
 
 // Listen for keyboard events
 document.addEventListener("keydown", e => {
-    if (numberKeys.includes(e.key)) {
-        appendNumber(e.key);
-        setDisplay();
-    }
-
-    else if (operatorKeys.includes(e.key)) {
-        setOperation(e.key);
-        setDisplay();
-    }
-
-    else if (e.key === '=' || e.key === 'Enter') {
-        calculate();
-        setDisplay();
-        currentOperand = "";
-    }
-
-    else if (e.key === 'Backspace') {
-        deleteNumber();
-        setDisplay();
+    if (keyboardKeys[e.key] !== undefined) {
+        document.getElementById(`btn-${keyboardKeys[e.key]}`).click();
     }
 });
