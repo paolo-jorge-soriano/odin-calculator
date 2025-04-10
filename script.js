@@ -152,3 +152,7 @@ document.addEventListener("keydown", e => {
         document.getElementById(`btn-${keyboardKeys[e.key]}`).click();
     }
 });
+
+// Display current year in HTML footer
+const currentYear = new Date().getFullYear();
+document.getElementById("current-year").innerText = currentYear;
