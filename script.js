@@ -28,6 +28,7 @@ const keyboardKeys = {
     '-': "subtract",
     '*': "multiply",
     '/': "divide",
+    '%': "modulo",
     '.': "decimal",
     '=': "equals",
     "Enter": "equals",
@@ -90,6 +91,10 @@ function calculate() {
             break;
         case '/':
             result = operand1 / operand2;
+            break;
+        case "mod":
+        case '%':
+            result = operand1 % operand2;
             break;
         default:
             return;
